@@ -28,14 +28,18 @@ const port = process.env.PORT || 3000;
 
 module.exports = app;
 
-const server = app.listen(port, () => {
-    console.log(`Listening on http://0.0.0.0:${port}`);
-});
+if (require.main === module) {
+    const port = process.env.PORT || 3000;
+    app.listen(port, () => {
+        console.log(`Listening on http://0.0.0.0:${port}`);
+    });
+}
 
 // graceful shutdown
 const shutdown = (signal) => {
     console.log(`Received ${signal}, shutting down...`);
     server.close(() => process.exit(0));
 };
+
 process.on('SIGINT', () => shutdown('SIGINT'));
 process.on('SIGTERM', () => shutdown('SIGTERM'));
